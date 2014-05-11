@@ -5,8 +5,12 @@ import (
 	"time"
 )
 
-// The smoothing used to estimate the current speed
-const SmothingFactor = 0.1
+const (
+	// SmothingFactor determines the smoothing used to estimate the current speed
+	SmothingFactor = 0.1
+	// SlugLength determines the length of the unique ticket slug
+	SlugLength = 5
+)
 
 var (
 	counter      int
@@ -28,12 +32,14 @@ func ResetCounter() {
 	counter = 0
 	current = 0
 	lastTime = time.Now()
+	// This makes old ticket inaccessible
+	tickets = make(map[string]*Ticket)
 }
 
 // returns a unique slug
-func randomSlug(count int) string {
+func randomSlug() string {
 	alphanum := "23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijklmnpqrstuvwxyz"
-	var bytes = make([]byte, count)
+	var bytes = make([]byte, SlugLength)
 	rand.Read(bytes)
 	for {
 		for i, b := range bytes {
@@ -54,7 +60,7 @@ func NewTicket() *Ticket {
 	counter++
 	ticket := &Ticket{
 		Value: counter,
-		Slug:  randomSlug(5),
+		Slug:  randomSlug(),
 	}
 	tickets[ticket.Slug] = ticket
 	return ticket
@@ -96,5 +102,4 @@ func restimateSpeed() {
 
 func init() {
 	ResetCounter()
-	tickets = make(map[string]*Ticket)
 }

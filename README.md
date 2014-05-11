@@ -1,3 +1,7 @@
+# Queue
+
+[![Build Status](https://drone.io/github.com/AlexanderEkdahl/queue/status.png)](https://drone.io/github.com/AlexanderEkdahl/queue/latest)
+
 /qr/<random>
 
 Shows the QR code that should be scanned. If the new link is changing this has to adapt.
@@ -17,6 +21,8 @@ Eventually
 import "github.com/boombuler/barcode"
 
 the printed ticket should show the slug should a user want to access the ticket remotely
+
+It should be able to autocorrect a 404 to the correc ticket if there is few similar. Using a bucket system for dynamic?
 
 /
 
