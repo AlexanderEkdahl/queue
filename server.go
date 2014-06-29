@@ -15,8 +15,11 @@ var (
 )
 
 func serveQR(w http.ResponseWriter, r *http.Request) {
-	target := fmt.Sprintf("http://%v/n", *host)
-	templates.ExecuteTemplate(w, "qr.html", target)
+	x := &struct {
+		QR string
+		R string
+	}{fmt.Sprintf("http://%v/n", *host), fmt.Sprintf("%.0f", EstimatedTotalQueueLength())}
+	templates.ExecuteTemplate(w, "qr.html", x)
 }
 
 func serveNew(w http.ResponseWriter, r *http.Request) {
@@ -34,9 +37,9 @@ func serveTicket(w http.ResponseWriter, r *http.Request) {
 
 	x := &struct {
 		T *Ticket
-		R float64
+		R string
 		C int
-	}{ticket, EstimatedQueueLength(ticket.Value), current}
+	}{ticket, fmt.Sprintf("%.0f", EstimatedTotalQueueLength()), current}
 
 	templates.ExecuteTemplate(w, "ticket.html", x)
 }
@@ -50,19 +53,14 @@ func serveManual(w http.ResponseWriter, r *http.Request) {
 	templates.ExecuteTemplate(w, "manual.html", ticket)
 }
 
-func serveRoot(w http.ResponseWriter, r *http.Request) {
-	templates.ExecuteTemplate(w, "root.html", EstimatedTotalQueueLength())
-}
-
 func main() {
 	flag.Parse()
 
-	http.HandleFunc("/qr", serveQR)
 	http.HandleFunc("/n", serveNew)
 	http.HandleFunc("/t/", serveTicket)
 	http.HandleFunc("/c/", serveCounter)
 	http.HandleFunc("/m/", serveManual)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
-	http.HandleFunc("/", serveRoot)
+	http.HandleFunc("/", serveQR)
 	log.Fatal(http.ListenAndServe(*host, nil))
 }

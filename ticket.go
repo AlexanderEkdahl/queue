@@ -20,7 +20,7 @@ var (
 	lastTime     time.Time
 )
 
-// Ticket represents a single ticket hold by a user
+// Ticket represents a single ticket held by a user
 type Ticket struct {
 	Value int
 	Slug  string
@@ -32,7 +32,7 @@ func ResetCounter() {
 	counter = 0
 	current = 0
 	lastTime = time.Now()
-	// This makes old ticket inaccessible
+	// This makes old tickets inaccessible
 	tickets = make(map[string]*Ticket)
 }
 
@@ -80,13 +80,13 @@ func NewCustomer() int {
 	return current
 }
 
-// EstimatedTotalQueueLength returns the estimated total queue length
+// EstimatedTotalQueueLength estimates total queue length
 func EstimatedTotalQueueLength() float64 {
 	// these methods fail to take into consideration the current time.
 	return float64(counter-current) / averageSpeed
 }
 
-// EstimatedQueueLength returns the estimated total queue length
+// EstimatedQueueLength estimates the queue length for a specific ticket
 func EstimatedQueueLength(n int) float64 {
 	// these methods fail to take into consideration the current time.
 	return float64(n-current) / averageSpeed

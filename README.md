@@ -51,3 +51,9 @@ Could use an interval instead between a best case scenario and worst case scenar
 ## Usage
 
     go install && queue -host="192.168.1.5:8080"
+
+## Demonstration
+
+1. `go install && queue -host="192.168.1.5:8080"`
+1. Go to http://localhost:8080/
+1. Scan QR-code visible on the page

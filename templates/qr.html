@@ -5,11 +5,22 @@
     <title>QR</title>
     <style type="text/css">
       body {
+        font-family: 'Helvetica Neue', sans-serif;
         text-align: center;
+        font-weight: 200;
+      }
+
+      img {
+        margin-top: 3em;
+      }
+
+      p {
+        margin-top: 1em;
       }
     </style>
   </head>
   <body>
-    <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data={{ . }}"/>
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data={{ .QR }}"/>
+    <p>Estimated queue length: {{ .R }} seconds</p>
   <body>
 </html>
